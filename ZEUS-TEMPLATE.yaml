@@ -1,18 +1,18 @@
 template:
-  name: "zeus-pamplejuce"
-  template_family: "pamplejuce"
+  name: "zeusJuce"
+  template_family: "zeusJuce"
   template_mode: "seeded-owned-template"
   owner: "ZEUS"
-  origin_repo: "https://github.com/ulascanaydin/pamplejuce.git"
+  origin_repo: "https://github.com/ulascanaydin/zeusJuce.git"
   seed_reference_repo: "https://github.com/sudara/pamplejuce.git"
-  local_clone_path: "template-sources/pamplejuce"
+  local_clone_path: "template-sources/zeusJuce"
 
 tracking:
   default_branch: "main"
   template_sync_policy: "own-repo-only"
   dependency_sync_policy: "direct-submodule-upstreams"
   sync_command: "bin/zeus-template-sync-pamplejuce --fetch-deps"
-  status_command: "bin/zeus-template-status template-sources/pamplejuce"
+  status_command: "bin/zeus-template-status template-sources/zeusJuce"
 
 submodules:
   juce:
