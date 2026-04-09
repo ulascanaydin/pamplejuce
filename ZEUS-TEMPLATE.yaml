@@ -1,0 +1,33 @@
+template:
+  name: "zeus-pamplejuce"
+  template_family: "pamplejuce"
+  template_mode: "upstream-tracking-fork"
+  owner: "ZEUS"
+  origin_repo: "https://github.com/ulascanaydin/pamplejuce.git"
+  upstream_repo: "https://github.com/sudara/pamplejuce.git"
+  local_clone_path: "template-sources/pamplejuce"
+
+tracking:
+  default_branch: "main"
+  sync_policy: "curated-manual-sync"
+  sync_command: "bin/zeus-template-sync-pamplejuce --ff-only"
+  status_command: "bin/zeus-template-status template-sources/pamplejuce"
+
+submodules:
+  juce:
+    path: "JUCE"
+    upstream_repo: "https://github.com/juce-framework/JUCE/"
+  cmake_includes:
+    path: "cmake"
+    upstream_repo: "https://github.com/sudara/cmake-includes.git"
+  clap_juce_extensions:
+    path: "modules/clap-juce-extensions"
+    upstream_repo: "https://github.com/free-audio/clap-juce-extensions.git"
+
+policy:
+  clap_mode: "scaffold-layer"
+  project_bootstrap_source: "ZEUS-owned fork of Pamplejuce"
+  notes:
+    - "ZEUS owns releases of the template while following upstream Pamplejuce deliberately."
+    - "JUCE remains pinned through the template's submodule strategy."
+    - "CLAP stays isolated until JUCE ships first-party CLAP authoring support."
