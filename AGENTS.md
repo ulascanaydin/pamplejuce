@@ -4,8 +4,7 @@ This file provides guidance to coding agents working with the `zeusJuce` templat
 
 ## About This Project
 
-`zeusJuce` is the ZEUS-owned JUCE plugin template baseline.
-It was initially seeded from Pamplejuce, but it is now maintained as its own template for ZEUS-driven plugin projects.
+`zeusJuce` is the ZEUS-owned JUCE plugin template baseline for ZEUS-driven plugin projects.
 
 The template provides the build system, packaging placeholders, CI-friendly project structure, and dependency layout.
 Plugin-specific product logic belongs in downstream projects created from this template, not in the template itself unless the task is explicitly template maintenance.
