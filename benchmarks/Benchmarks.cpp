@@ -1,3 +1,9 @@
+#include "PluginProcessor.h"
+#include "catch2/benchmark/catch_benchmark_all.hpp"
+#include "catch2/catch_test_macros.hpp"
+
+#include <vector>
+
 TEST_CASE ("Boot performance")
 {
     BENCHMARK_ADVANCED ("Processor constructor")

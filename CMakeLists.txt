@@ -34,8 +34,12 @@ set(COMPANY_NAME "ZEUS")
 set(BUNDLE_ID "com.zeus.zeusjuce")
 
 # Change me! Set the plugin formats you want built
-# Valid choices: AAX Unity VST VST3 AU AUv3 Standalone
-set(FORMATS Standalone AU VST3 AUv3)
+# Valid choices: AAX Unity VST VST3 AU AUv3 Standalone CLAP
+# Keep this aligned with packaging/ and CI release expectations.
+set(FORMATS Standalone AU VST3 AUv3 CLAP)
+
+option(ZEUSJUCE_COPY_PLUGIN_AFTER_BUILD "Copy built plugins into system plugin folders after each build" OFF)
+option(ZEUSJUCE_REGISTER_BENCHMARKS_WITH_CTEST "Register benchmark cases with ctest" OFF)
 
 # Force JUCE to work with sccache
 # instruct MSVC to embed debug info (/Z7) instead of emitting a .pdb
@@ -48,10 +52,11 @@ project(${PROJECT_NAME} VERSION ${CURRENT_VERSION})
 # Log build environment info (after project() so compiler info is available)
 include(ZeusJuceLog)
 
-# JUCE is setup as a submodule in the /JUCE folder
-# Locally, you must run `git submodule update --init --recursive` once
-# and later `git submodule update --remote --merge` to keep it up to date
-# On Github Actions, this is done as a part of actions/checkout
+# JUCE is set up as a submodule in the /JUCE folder.
+# Locally, run `git submodule update --init --recursive` to materialize recorded SHAs.
+# Template dependency updates should be done intentionally at the template root,
+# rather than by ad-hoc downstream submodule pointer bumps inside generated projects.
+# On GitHub Actions, submodules are populated as part of actions/checkout.
 add_subdirectory(JUCE)
 
 # Add CLAP format
@@ -72,8 +77,8 @@ juce_add_plugin("${PROJECT_NAME}"
     COMPANY_NAME "${COMPANY_NAME}"
     BUNDLE_ID "${BUNDLE_ID}"
 
-    # On MacOS, plugin is copied to /Users/yourname/Library/Audio/Plug-Ins/
-    COPY_PLUGIN_AFTER_BUILD TRUE
+    # Opt-in for local development when you explicitly want build artifacts copied into system plugin folders
+    COPY_PLUGIN_AFTER_BUILD ${ZEUSJUCE_COPY_PLUGIN_AFTER_BUILD}
 
     # Change me!
     # A four-character plugin id
@@ -135,7 +140,7 @@ target_compile_definitions(SharedCode
     VERSION="${CURRENT_VERSION}"
 
     # JucePlugin_Name is for some reason doesn't use the nicer PRODUCT_NAME
-    PRODUCT_NAME_WITHOUT_VERSION="zeusJuce"
+    PRODUCT_NAME_WITHOUT_VERSION="${PRODUCT_NAME}"
 )
 
 # Link to any other modules you added (with juce_add_module) here!

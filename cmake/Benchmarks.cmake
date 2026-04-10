@@ -1,11 +1,16 @@
-file(GLOB_RECURSE BenchmarkFiles CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/benchmarks/Catch2Main.cpp" "${CMAKE_CURRENT_SOURCE_DIR}/benchmarks/*.h")
+file(GLOB_RECURSE BenchmarkFiles CONFIGURE_DEPENDS
+    "${CMAKE_CURRENT_SOURCE_DIR}/benchmarks/*.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/benchmarks/*.h")
 
 # Organize the test source in the Tests/ folder in the IDE
 source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}/benchmarks PREFIX "" FILES ${BenchmarkFiles})
 
 add_executable(Benchmarks ${BenchmarkFiles})
 target_compile_features(Benchmarks PRIVATE cxx_std_20)
-catch_discover_tests(Benchmarks)
+
+if (ZEUSJUCE_REGISTER_BENCHMARKS_WITH_CTEST)
+    catch_discover_tests(Benchmarks)
+endif ()
 
 # Our benchmark executable also wants to know about our plugin code...
 target_include_directories(Benchmarks PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/source)

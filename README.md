@@ -12,7 +12,7 @@ Out of the box, `zeusJuce` gives you:
 2. JUCE as a git submodule
 3. ZEUS-owned `cmake/` helper infrastructure
 4. Catch2 tests and benchmarks
-5. packaging placeholders and installer resources
+5. packaging placeholders, baseline template icons, and installer resources
 6. CLAP integration scaffolding via `clap-juce-extensions`
 7. a repository layout that ZEUS workflows can reason about consistently
 
@@ -41,7 +41,7 @@ Rules:
 - `tests/` - test sources
 - `benchmarks/` - benchmark sources
 - `assets/` - embedded assets
-- `packaging/` - installer and release resources
+- `packaging/` - installer and release resources, including template placeholder icons/EULA/README
 - `modules/` - third-party plugin-related submodules
 - `JUCE/` - JUCE framework submodule
 - `ZEUS-TEMPLATE.yaml` - template identity and maintenance metadata
@@ -56,17 +56,30 @@ cmake -B Builds -DCMAKE_BUILD_TYPE=Release
 # Build
 cmake --build Builds --config Release
 
-# Run tests
+# Run unit tests
 ctest --test-dir Builds --verbose --output-on-failure
 
-# Run benchmarks
+# Run benchmarks explicitly
 ./Builds/Benchmarks
 ```
+
+Notes:
+- plugin copying into system plugin folders is disabled by default for safer local builds
+- enable it explicitly with `-DZEUSJUCE_COPY_PLUGIN_AFTER_BUILD=ON` when you want install-after-build behaviour
+- benchmarks build by default, but they are not registered with `ctest` unless you opt in with `-DZEUSJUCE_REGISTER_BENCHMARKS_WITH_CTEST=ON`
 
 For faster local builds, Ninja is recommended:
 
 ```bash
 cmake -B Builds -G Ninja -DCMAKE_BUILD_TYPE=Release
+```
+
+The template also ships `CMakePresets.json` for a lightweight standard setup:
+
+```bash
+cmake --preset dev
+cmake --build --preset build-dev
+ctest --preset test-dev
 ```
 
 ## Bootstrap into a ZEUS project
@@ -79,6 +92,10 @@ zeus-init-plugin MyPlugin
 cd MyPlugin
 ./bin/zeus create-plugin-brief
 ```
+
+`zeus-init-plugin` now personalizes the cloned template to the target directory name, deriving a project name, product name, bundle identifier, and plugin codes so new projects do not all ship the same template identity.
+
+Packaging assets are still template placeholders. Before shipping a real product, replace the baseline icons and installer copy under `packaging/`.
 
 ## Maintenance reality
 

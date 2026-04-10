@@ -1,17 +1,33 @@
 template:
+  schema_version: 1
   name: "zeusJuce"
+  version: "0.0.3"
+  description: "ZEUS-owned JUCE plugin template baseline."
   template_family: "zeusJuce"
   template_mode: "zeus-owned-template"
   owner: "ZEUS"
+  version_file: "VERSION"
   origin_repo: "https://github.com/ulascanaydin/zeusJuce.git"
-  local_clone_path: "template-sources/zeusJuce"
+  seed_repo: "https://github.com/sudara/pamplejuce"
+  local_clone_path: "."
+  docs:
+    readme: "README.md"
+    system: "ZEUSJUCE-TEMPLATE-SYSTEM.md"
+    preflight: "TEMPLATE-PREFLIGHT.md"
 
 tracking:
   default_branch: "main"
   template_sync_policy: "own-repo-only"
   dependency_sync_policy: "juce-and-third-party-submodules"
-  sync_command: "bin/zeus-template-sync-zeusJuce --fetch-deps"
-  status_command: "bin/zeus-template-status template-sources/zeusJuce"
+  bootstrap_command: "bin/zeus-init-plugin <project-dir>"
+  preflight_command: "bin/zeus-template-preflight <project-dir>"
+  sync_command: "bin/zeus-template-sync-zeusJuce --repo . --fetch-deps"
+  status_command: "bin/zeus-template-status --repo ."
+
+based_on:
+  seed_system: "pamplejuce"
+  pamplejuce_repo: "https://github.com/sudara/pamplejuce"
+  pamplejuce_commit: "c045cfb49a942422fb94fe8203f0266e0c389f5c"
 
 submodules:
   juce:
@@ -24,11 +40,20 @@ submodules:
     path: "modules/melatonin_inspector"
     upstream_repo: "https://github.com/sudara/melatonin_inspector.git"
 
+dependency_revisions:
+  juce_commit: "90996e26c8e975ed3c38992230262b9694ef8d5f"
+  clap_juce_extensions_commit: "e1f67893cc409a40c1154fa2e78c97046da24ce0"
+  melatonin_inspector_commit: "8f0b23aae1ac9ca185fa62c09cfde477fc2dda00"
+
 template_infrastructure:
   cmake:
     path: "cmake"
     ownership: "zeusJuce"
     maintenance_mode: "template-owned"
+
+scaffold:
+  fingerprint_algorithm: "sha256"
+  fingerprint: "7f036b655c2ceeb58ee7fd5054dd001f9381fe830e1e70bd43ce064af2326749"
 
 policy:
   clap_mode: "scaffold-layer"

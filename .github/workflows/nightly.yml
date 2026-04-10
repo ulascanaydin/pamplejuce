@@ -1,6 +1,6 @@
-# This workflow is for the Pamplejuce template repo itself (sudara/pamplejuce).
+# This workflow is for the zeusJuce template repo itself.
 # It runs a nightly build to catch issues with dependencies, JUCE updates, etc.
-# If you're using this template for your own plugin, feel free to delete this file.
+# Downstream plugin repos may delete this file if they do not want scheduled template CI.
 name: Nightly
 
 on:
@@ -9,7 +9,7 @@ on:
 
 jobs:
   nightly:
-    # Only run on the original Pamplejuce repo, not forks or template copies
-    if: github.repository == 'sudara/pamplejuce'
+    # Only run on the original zeusJuce repo, not forks or downstream template copies
+    if: github.repository == 'ulascanaydin/zeusJuce'
     uses: ./.github/workflows/build_and_test.yml
     secrets: inherit
