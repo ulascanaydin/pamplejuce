@@ -50,7 +50,7 @@ Rule:
 - `modules/` - third-party plugin-related submodules
 - `JUCE/` - JUCE framework submodule
 - `ZEUS-TEMPLATE.yaml` - template identity and maintenance metadata
-- `AGENTS.md` / `CLAUDE.md` - coding-agent guidance
+- `AGENTS.md` - coding-agent guidance
 
 ## Build commands
 
