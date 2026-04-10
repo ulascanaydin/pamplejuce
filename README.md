@@ -1,55 +1,99 @@
-![PAMPLEJUCE](assets/images/pamplejuce.png)
-[![](https://github.com/sudara/pamplejuce/actions/workflows/build_and_test.yml/badge.svg)](https://github.com/sudara/pamplejuce/actions)
+# zeusJuce
 
-Pamplejuce is a ~~template~~ lifestyle for creating and building JUCE plugins in 2026.
+`zeusJuce` is the ZEUS-owned JUCE plugin template baseline.
 
-Out-of-the-box, it:
+It was initially seeded from [Pamplejuce](https://github.com/sudara/pamplejuce), but it is now maintained as its own template for ZEUS-driven plugin projects.
 
-1. Runs C++23
-2. Uses JUCE 8.x as a git submodule (tracking develop).
-3. Uses CPM for dependency management.
-3. Relies on CMake 3.25 and higher for cross-platform building.
-4. Has [Catch2](https://github.com/catchorg/Catch2) v3.7.1 for the test framework and runner.
-5. Includes a `Tests` target and a `Benchmarks` target with examples to get started quickly.
-6. Has [Melatonin Inspector](https://github.com/sudara/melatonin_inspector) installed as a JUCE module to help relieve headaches when building plugin UI.
+## What zeusJuce is for
 
-It also has integration with GitHub Actions, specifically:
+Use `zeusJuce` when you want a production-oriented JUCE+CMake starting point with:
+- JUCE as a git submodule
+- ZEUS-owned `cmake/` helper infrastructure
+- Catch2 tests and benchmarks
+- packaging resources
+- CLAP integration scaffolding via `clap-juce-extensions`
+- a repository shape that ZEUS workflows can reason about consistently
 
-1. Building and testing cross-platform (linux, macOS, Windows) binaries
-2. Running tests and benchmarks in CI
-3. Running [pluginval](http://github.com/tracktion/pluginval) 1.x against the binaries for plugin validation
-4. Config for [installing Intel IPP](https://www.intel.com/content/www/us/en/developer/tools/oneapi/ipp.html)
-5. [Code signing and notarization on macOS](https://melatonin.dev/blog/how-to-code-sign-and-notarize-macos-audio-plugins-in-ci/)
-6. [Windows code signing via Azure Trusted Signing](https://melatonin.dev/blog/code-signing-on-windows-with-azure-trusted-signing/)
+## What zeusJuce is not
 
-It also contains:
+- not the JUCE framework itself
+- not a generic CMake tutorial repo
+- not a one-off educational course project
+- not a live upstream-tracking mirror of Pamplejuce
 
-1. A `.gitignore` for all platforms.
-2. A `.clang-format` file for keeping code tidy.
-3. A `VERSION` file that will propagate through JUCE and your app.
-4. A ton of useful comments and options around the CMake config.
+## Dependency model
 
-## How does this all work at a high level?
+### Template-owned infrastructure
+- `cmake/`
+- packaging placeholders
+- template metadata such as `ZEUS-TEMPLATE.yaml`
 
-Check out the [official Pamplejuce documentation](https://melatonin.dev/manuals/pamplejuce/how-does-this-all-work/).
+### Dependency-managed submodules
+- `JUCE/`
+- `modules/clap-juce-extensions/`
+- nested CLAP helper submodules
+- `modules/melatonin_inspector/`
 
-[![Arc - 2024-10-01 51@2x](https://github.com/user-attachments/assets/01d19d2d-fbac-481f-8cec-e9325b2abe57)](https://melatonin.dev/manuals/pamplejuce/how-does-this-all-work/)
+Rule:
+- ordinary feature work should not edit dependency-managed submodules
+- `cmake/` should only be changed during explicit template/build-system maintenance
 
-## Setting up for YOUR project
+## Repository structure
 
-This is a template repo!
+- `CMakeLists.txt` - root build definition
+- `cmake/` - ZEUS-owned helper CMake files
+- `source/` - plugin source code
+- `tests/` - test sources
+- `benchmarks/` - benchmark sources
+- `assets/` - embedded assets
+- `packaging/` - installer and release resources
+- `modules/` - third-party plugin-related submodules
+- `JUCE/` - JUCE framework submodule
+- `ZEUS-TEMPLATE.yaml` - template identity and maintenance metadata
+- `AGENTS.md` / `CLAUDE.md` - coding-agent guidance
 
-That means you can click "[Use this template](https://github.com/sudara/pamplejuce/generate)" here or at the top of the page to get your own copy (not fork) of the repo. Then you can make it private or keep it public, up to you.
+## Build commands
 
-Then check out the [documentation](https://melatonin.dev/manuals/pamplejuce/setting-your-project-up/) so you know what to tweak. 
+```bash
+# Configure
+cmake -B Builds -DCMAKE_BUILD_TYPE=Release
 
-> [!NOTE]
-> Tests will immediately run and fail (go red) until you [set up code signing](https://melatonin.dev/manuals/pamplejuce/getting-started/code-signing/).
+# Build
+cmake --build Builds --config Release
 
-## Having Issues?
+# Run tests
+ctest --test-dir Builds --verbose --output-on-failure
 
-Thanks to everyone who has contributed to the repository. 
+# Run benchmarks
+./Builds/Benchmarks
+```
 
-This repository covers a _lot_ of ground. JUCE itself has a lot of surface area. It's a group effort to maintain the garden and keep things nice!
+For faster local builds, Ninja is recommended:
 
-If something isn't just working out of the box — *it's probably not just you* — others are running into the problem, too, I promise. Check out [the official docs](https://melatonin.dev/manuals/pamplejuce), then please do [open an issue](https://github.com/sudara/pamplejuce/issues/new)!
+```bash
+cmake -B Builds -G Ninja -DCMAKE_BUILD_TYPE=Release
+```
+
+## Bootstrap into a ZEUS project
+
+The normal ZEUS flow is not to work directly in this template repo for product development.
+Instead, bootstrap a new project from it and then install ZEUS on top:
+
+```bash
+zeus-init-plugin MyPlugin
+cd MyPlugin
+./bin/zeus create-plugin-brief
+```
+
+## Maintenance reality
+
+`zeusJuce` is ZEUS-owned.
+
+That means:
+- ZEUS decides template structure and releases
+- Pamplejuce remains a seed/reference, not the controlling upstream
+- JUCE and selected third-party components still move through submodule upstreams
+
+## License note
+
+This repository remains MIT-licensed. It contains ZEUS-owned modifications on top of material originally seeded from Pamplejuce.

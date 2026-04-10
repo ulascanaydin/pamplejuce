@@ -4,9 +4,11 @@ This file provides guidance to coding agents working with the `zeusJuce` templat
 
 ## About This Project
 
-This project is derived from the [Pamplejuce](https://github.com/sudara/pamplejuce) template — a JUCE audio plugin template using CMake, C++23, and modern CI/CD. It builds cross-platform (macOS, Windows, Linux) with support for multiple plugin formats (VST3, AU, AUv3, CLAP, Standalone).
+`zeusJuce` is the ZEUS-owned JUCE plugin template baseline.
+It was initially seeded from Pamplejuce, but it is now maintained as its own template for ZEUS-driven plugin projects.
 
-The template provides the build system, CI/CD, and project structure. The plugin-specific logic lives in `source/`.
+The template provides the build system, packaging placeholders, CI-friendly project structure, and dependency layout.
+Plugin-specific product logic belongs in downstream projects created from this template, not in the template itself unless the task is explicitly template maintenance.
 
 ## Build Commands
 
@@ -36,14 +38,15 @@ On macOS for universal binary: `-DCMAKE_OSX_ARCHITECTURES="arm64;x86_64"`
 
 ## Project Structure
 
-- `source/` - Plugin source code (PluginProcessor, PluginEditor)
+- `source/` - plugin source code
 - `tests/` - Catch2 test files
 - `benchmarks/` - Catch2 benchmark files
 - `cmake/` - ZEUS-owned CMake helper infrastructure
-- `modules/` - Git submodules such as clap-juce-extensions and melatonin_inspector
+- `modules/` - third-party plugin-related submodules
 - `JUCE/` - JUCE framework submodule
-- `assets/` - Binary resources (auto-included via juce_add_binary_data)
-- `packaging/` - Installer resources and scripts
+- `assets/` - binary resources
+- `packaging/` - installer resources and release placeholders
+- `ZEUS-TEMPLATE.yaml` - template metadata and maintenance model
 
 ## Dependency-managed paths
 
@@ -68,45 +71,41 @@ Rules:
 **SharedCode Library**: The `SharedCode` INTERFACE library links plugin source code to both the main plugin target and the Tests target, avoiding ODR violations.
 
 **CMake Modules**:
-- `PamplejuceVersion.cmake` - Reads VERSION file, optional auto-bump patch level
-- `Assets.cmake` - Auto-includes all files in assets/ as binary data
-- `Tests.cmake` - Configures Catch2 test target
-- `Benchmarks.cmake` - Configures Catch2 benchmark target
+- `PamplejuceVersion.cmake` - reads `VERSION`, optional auto-bump patch level
+- `Assets.cmake` - auto-includes asset files as binary data
+- `Tests.cmake` - configures Catch2 test target
+- `Benchmarks.cmake` - configures Catch2 benchmark target
 - `PamplejuceIPP.cmake` - Intel IPP integration (optional)
 
-These CMake helper files live in `cmake/`, which is now template-owned infrastructure inside `zeusJuce`, not an external submodule.
+These CMake helper files live in `cmake/`, which is template-owned infrastructure inside `zeusJuce`, not an external submodule.
 
 **Test Discovery**: Uses `catch_discover_tests()` with `PRE_TEST` discovery mode for Xcode compatibility.
 
 ## Key Configuration
 
 Edit `CMakeLists.txt` to customize:
-- `PROJECT_NAME` - Internal name (no spaces)
-- `PRODUCT_NAME` - Display name in DAWs (can have spaces)
-- `COMPANY_NAME` - Used for bundle name
+- `PROJECT_NAME` - internal name (no spaces)
+- `PRODUCT_NAME` - display name in DAWs (can have spaces)
+- `COMPANY_NAME` - bundle/install identity
 - `BUNDLE_ID` - macOS bundle identifier
-- `FORMATS` - Plugin formats to build (Standalone AU VST3 AUv3)
+- `FORMATS` - plugin formats to build (Standalone AU VST3 AUv3 CLAP, depending on template configuration)
 - `PLUGIN_MANUFACTURER_CODE` / `PLUGIN_CODE` - 4-character plugin IDs
 
 Version is read from the `VERSION` file in project root.
 
 ## Code Quality
 
-Always resolve any compile warnings encountered during builds. Warnings should be treated as errors and fixed before considering a task complete.
+Always resolve compile warnings encountered during builds. Treat warnings as errors for maintenance-quality work.
 
-Note: LSP/clangd often reports false positive diagnostic errors (like "undeclared identifier", "file not found") because it doesn't have full context of the JUCE module system. Ignore these unless the actual build fails.
-
-## Includes
-
-JUCE modules include common standard library headers (`<vector>`, `<algorithm>`, `<string>`, `<memory>`, etc.) so you don't need to add those explicitly in JUCE code. Adding them is harmless but redundant.
+Note: LSP/clangd may report false positives because JUCE module context can confuse tooling. Trust the actual build over editor diagnostics when they conflict.
 
 ## Realtime Safety
 
 For anything in the audio thread / hot DSP path (e.g. `processBlock`):
-- Allocate in constructors or `prepareToPlay`, not while rendering audio
-- Avoid dynamic allocations and container growth (`std::vector::push_back`, map insertion, string building)
-- Prefer fixed-size storage (`std::array`, preallocated buffers, fixed-capacity queues)
-- Keep operations deterministic and lock-free where possible
+- allocate in constructors or `prepareToPlay`, not while rendering audio
+- avoid dynamic allocations and container growth
+- prefer fixed-size storage and preallocated buffers
+- keep operations deterministic and lock-free where possible
 
 ## Code Style
 
