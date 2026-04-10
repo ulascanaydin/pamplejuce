@@ -10,7 +10,7 @@ template:
 tracking:
   default_branch: "main"
   template_sync_policy: "own-repo-only"
-  dependency_sync_policy: "direct-submodule-upstreams"
+  dependency_sync_policy: "juce-and-third-party-submodules"
   sync_command: "bin/zeus-template-sync-pamplejuce --fetch-deps"
   status_command: "bin/zeus-template-status template-sources/zeusJuce"
 
@@ -18,9 +18,11 @@ submodules:
   juce:
     path: "JUCE"
     upstream_repo: "https://github.com/juce-framework/JUCE/"
-  cmake_includes:
+template_infrastructure:
+  cmake:
     path: "cmake"
-    upstream_repo: "https://github.com/sudara/cmake-includes.git"
+    ownership: "zeusJuce"
+    maintenance_mode: "template-owned"
   clap_juce_extensions:
     path: "modules/clap-juce-extensions"
     upstream_repo: "https://github.com/free-audio/clap-juce-extensions.git"
@@ -31,5 +33,6 @@ policy:
   notes:
     - "ZEUS owns releases of the template."
     - "Pamplejuce is the seed/reference, not the required merge upstream."
-    - "JUCE and related dependencies remain tracked through submodules."
+    - "JUCE and selected third-party dependencies remain tracked through submodules."
+    - "cmake/ is owned directly by the zeusJuce template."
     - "CLAP stays isolated until JUCE ships first-party CLAP authoring support."

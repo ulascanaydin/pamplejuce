@@ -74,6 +74,8 @@ Rules:
 - `Benchmarks.cmake` - Configures Catch2 benchmark target
 - `PamplejuceIPP.cmake` - Intel IPP integration (optional)
 
+These CMake helper files live in `cmake/`, which is now template-owned infrastructure inside `zeusJuce`, not an external submodule.
+
 **Test Discovery**: Uses `catch_discover_tests()` with `PRE_TEST` discovery mode for Xcode compatibility.
 
 ## Key Configuration
