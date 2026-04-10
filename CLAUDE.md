@@ -1,6 +1,6 @@
-# CLAUDE.md
+# AGENTS.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+This file provides guidance to coding agents working with the `zeusJuce` template repository.
 
 ## About This Project
 
@@ -39,11 +39,26 @@ On macOS for universal binary: `-DCMAKE_OSX_ARCHITECTURES="arm64;x86_64"`
 - `source/` - Plugin source code (PluginProcessor, PluginEditor)
 - `tests/` - Catch2 test files
 - `benchmarks/` - Catch2 benchmark files
-- `cmake/` - CMake modules (Tests.cmake, Benchmarks.cmake, Assets.cmake, etc.)
-- `modules/` - Git submodules: clap-juce-extensions, melatonin_inspector
-- `JUCE/` - JUCE framework (git submodule)
+- `cmake/` - CMake helper submodule
+- `modules/` - Git submodules such as clap-juce-extensions and melatonin_inspector
+- `JUCE/` - JUCE framework submodule
 - `assets/` - Binary resources (auto-included via juce_add_binary_data)
 - `packaging/` - Installer resources and scripts
+
+## Dependency-managed paths
+
+The following paths are dependency-managed and are not normal implementation targets:
+- `JUCE/`
+- `cmake/`
+- `modules/clap-juce-extensions/`
+- other third-party submodules under `modules/`
+
+Rules:
+- do not edit files inside dependency-managed paths during ordinary feature work
+- do not treat these paths as normal agent ownership zones
+- only touch them during explicit template/dependency maintenance tasks
+- preferred maintenance is to update submodule pointers intentionally at the template root
+- if submodules are missing or empty, run `git submodule update --init --recursive`
 
 ## Architecture
 
