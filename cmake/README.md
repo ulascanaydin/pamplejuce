@@ -1,33 +1,34 @@
-# CMake Includes for Pamplejuce
+# CMake Includes for zeusJuce
 
-Hi there!
+This folder contains the CMake helper infrastructure used by `zeusJuce`.
 
-## What is this?
+It is now owned directly by the `zeusJuce` template and is no longer tracked as an external submodule.
 
-It's most of the actual CMake functionality used by [Pamplejuce](https://github.com/sudara/pamplejuce), my template repository for plugins in the JUCE framework.
+## What is in here?
 
-## Why is this its own git submodule?
+This folder contains most of the reusable CMake functionality behind the template, including:
+- version handling
+- tests and benchmarks wiring
+- asset embedding
+- JUCE-related defaults
+- optional IPP integration
+- GitHub/CI environment helpers
+- Xcode organization helpers
 
-It's to help projects built by the template pull in the lastest changes.
+## Maintenance policy
 
-[Pamplejuce](https://github.com/sudara/pamplejuce) is a template repository. Unlike most "dependencies," when you hit "Create Template" you are literally copying and pasting the code. Which sorta sucks, as people can't get fixes or updates.
+`cmake/` is template-owned infrastructure.
 
-## Why would I want updates?
+That means:
+- ordinary plugin feature work should not modify it
+- template/build-system maintenance may modify it deliberately
+- if a helper needs improvement, update it here inside `zeusJuce`
+- do not treat this folder as a separate upstream dependency
 
-For at least the gritty CMake details, there are fixes, improvements and additional functionality being added. 
+## Why keep it separate as a folder?
 
-In the best case, as a submodule, you can pull in the fixes and improvements.
+Because it keeps the root `CMakeLists.txt` readable while preserving reusable build logic in one obvious place.
 
-In the worst case, this seperate repo will help you see what exactly changed in Pamplejuce.
-
-## Is it risky?
-
-It could be! 
-
-As of 2023, Pamplejuce is still being changed around a bunch, with the goal of being a better and better ecosystem for developers.
-
-That means there could be breakage when you pull. 
-
-## What changed recently tho?
+## Change tracking
 
 See [CHANGELOG.md](CHANGELOG.md).

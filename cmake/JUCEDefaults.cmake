@@ -7,7 +7,7 @@ set_property(GLOBAL PROPERTY USE_FOLDERS YES)
 option(JUCE_ENABLE_MODULE_SOURCE_GROUPS "Show all module sources in IDE projects" ON)
 
 # Static runtime please
-# See https://github.com/sudara/pamplejuce/issues/111
+# Historical note: this default originated in the template lineage and is now maintained inside zeusJuce.
 if (WIN32)
     set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>" CACHE INTERNAL "")
 endif ()

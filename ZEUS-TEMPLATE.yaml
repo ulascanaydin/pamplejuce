@@ -1,38 +1,40 @@
 template:
   name: "zeusJuce"
   template_family: "zeusJuce"
-  template_mode: "seeded-owned-template"
+  template_mode: "zeus-owned-template"
   owner: "ZEUS"
   origin_repo: "https://github.com/ulascanaydin/zeusJuce.git"
-  seed_reference_repo: "https://github.com/sudara/pamplejuce.git"
   local_clone_path: "template-sources/zeusJuce"
 
 tracking:
   default_branch: "main"
   template_sync_policy: "own-repo-only"
   dependency_sync_policy: "juce-and-third-party-submodules"
-  sync_command: "bin/zeus-template-sync-pamplejuce --fetch-deps"
+  sync_command: "bin/zeus-template-sync-zeusJuce --fetch-deps"
   status_command: "bin/zeus-template-status template-sources/zeusJuce"
 
 submodules:
   juce:
     path: "JUCE"
     upstream_repo: "https://github.com/juce-framework/JUCE/"
+  clap_juce_extensions:
+    path: "modules/clap-juce-extensions"
+    upstream_repo: "https://github.com/free-audio/clap-juce-extensions.git"
+  melatonin_inspector:
+    path: "modules/melatonin_inspector"
+    upstream_repo: "https://github.com/sudara/melatonin_inspector.git"
+
 template_infrastructure:
   cmake:
     path: "cmake"
     ownership: "zeusJuce"
     maintenance_mode: "template-owned"
-  clap_juce_extensions:
-    path: "modules/clap-juce-extensions"
-    upstream_repo: "https://github.com/free-audio/clap-juce-extensions.git"
 
 policy:
   clap_mode: "scaffold-layer"
-  project_bootstrap_source: "ZEUS-owned template seeded from Pamplejuce"
+  project_bootstrap_source: "ZEUS-owned zeusJuce template"
   notes:
-    - "ZEUS owns releases of the template."
-    - "Pamplejuce is the seed/reference, not the required merge upstream."
+    - "ZEUS owns releases of this template."
     - "JUCE and selected third-party dependencies remain tracked through submodules."
     - "cmake/ is owned directly by the zeusJuce template."
     - "CLAP stays isolated until JUCE ships first-party CLAP authoring support."

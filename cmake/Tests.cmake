@@ -46,7 +46,7 @@ set_target_properties(Tests PROPERTIES XCODE_GENERATE_SCHEME ON)
 # When running Tests we have specific needs
 target_compile_definitions(Tests PUBLIC
     JUCE_MODAL_LOOPS_PERMITTED=1 # let us run Message Manager in tests
-    RUN_PAMPLEJUCE_TESTS=1 # also run tests in other module .cpp files guarded by RUN_PAMPLEJUCE_TESTS
+    RUN_ZEUSJUCE_TESTS=1 # also run tests in other module .cpp files guarded by RUN_ZEUSJUCE_TESTS
 )
 
 # Let our tests target know we are running in CI

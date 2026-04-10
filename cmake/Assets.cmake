@@ -1,5 +1,5 @@
-# HEADS UP: Pamplejuce assumes anything you stick in the assets folder you want to included in your binary!
-# This makes life easy, but will bloat your binary needlessly if you include unused files
+# HEADS UP: zeusJuce assumes anything you put in the assets folder should be included in your binary.
+# This makes life easy, but will bloat your binary if you include unused files.
 file(GLOB_RECURSE AssetFiles CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/assets/*")
 list (FILTER AssetFiles EXCLUDE REGEX "/\\.DS_Store$") # We don't want the .DS_Store on macOS though...
 

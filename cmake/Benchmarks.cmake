@@ -22,5 +22,5 @@ set_target_properties(Benchmarks PROPERTIES XCODE_GENERATE_SCHEME ON)
 # When running Tests we have specific needs
 target_compile_definitions(Benchmarks PUBLIC
     JUCE_MODAL_LOOPS_PERMITTED=1 # let us run Message Manager in tests
-    RUN_PAMPLEJUCE_TESTS=1 # also run tests in module .cpp files guarded by RUN_PAMPLEJUCE_TESTS
+    RUN_ZEUSJUCE_TESTS=1 # also run tests in module .cpp files guarded by RUN_ZEUSJUCE_TESTS
 )

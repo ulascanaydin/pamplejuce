@@ -2,24 +2,19 @@
 
 `zeusJuce` is the ZEUS-owned JUCE plugin template baseline.
 
-It was initially seeded from [Pamplejuce](https://github.com/sudara/pamplejuce), but it is now maintained as its own template for ZEUS-driven plugin projects.
+It provides a production-oriented JUCE+CMake starting point for ZEUS-driven plugin projects.
 
-## What zeusJuce is for
+## What zeusJuce includes
 
-Use `zeusJuce` when you want a production-oriented JUCE+CMake starting point with:
-- JUCE as a git submodule
-- ZEUS-owned `cmake/` helper infrastructure
-- Catch2 tests and benchmarks
-- packaging resources
-- CLAP integration scaffolding via `clap-juce-extensions`
-- a repository shape that ZEUS workflows can reason about consistently
+Out of the box, `zeusJuce` gives you:
 
-## What zeusJuce is not
-
-- not the JUCE framework itself
-- not a generic CMake tutorial repo
-- not a one-off educational course project
-- not a live upstream-tracking mirror of Pamplejuce
+1. C++23-based JUCE plugin setup
+2. JUCE as a git submodule
+3. ZEUS-owned `cmake/` helper infrastructure
+4. Catch2 tests and benchmarks
+5. packaging placeholders and installer resources
+6. CLAP integration scaffolding via `clap-juce-extensions`
+7. a repository layout that ZEUS workflows can reason about consistently
 
 ## Dependency model
 
@@ -34,7 +29,7 @@ Use `zeusJuce` when you want a production-oriented JUCE+CMake starting point wit
 - nested CLAP helper submodules
 - `modules/melatonin_inspector/`
 
-Rule:
+Rules:
 - ordinary feature work should not edit dependency-managed submodules
 - `cmake/` should only be changed during explicit template/build-system maintenance
 
@@ -76,8 +71,8 @@ cmake -B Builds -G Ninja -DCMAKE_BUILD_TYPE=Release
 
 ## Bootstrap into a ZEUS project
 
-The normal ZEUS flow is not to work directly in this template repo for product development.
-Instead, bootstrap a new project from it and then install ZEUS on top:
+The normal ZEUS flow is not to do product development directly in this template repo.
+Instead, create a project from it and install ZEUS on top:
 
 ```bash
 zeus-init-plugin MyPlugin
@@ -91,9 +86,9 @@ cd MyPlugin
 
 That means:
 - ZEUS decides template structure and releases
-- Pamplejuce remains a seed/reference, not the controlling upstream
-- JUCE and selected third-party components still move through submodule upstreams
+- JUCE and selected third-party components move through submodule upstreams
+- `cmake/` is owned directly inside the template
 
 ## License note
 
-This repository remains MIT-licensed. It contains ZEUS-owned modifications on top of material originally seeded from Pamplejuce.
+This repository is MIT-licensed.

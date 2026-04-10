@@ -70,11 +70,11 @@ Rules:
 **SharedCode Library**: The `SharedCode` INTERFACE library links plugin source code to both the main plugin target and the Tests target, avoiding ODR violations.
 
 **CMake Modules**:
-- `PamplejuceVersion.cmake` - reads `VERSION`, optional auto-bump patch level
+- `ZeusJuceVersion.cmake` - reads `VERSION`, optional auto-bump patch level
 - `Assets.cmake` - auto-includes asset files as binary data
 - `Tests.cmake` - configures Catch2 test target
 - `Benchmarks.cmake` - configures Catch2 benchmark target
-- `PamplejuceIPP.cmake` - Intel IPP integration (optional)
+- `ZeusJuceIPP.cmake` - Intel IPP integration (optional)
 
 These CMake helper files live in `cmake/`, which is template-owned infrastructure inside `zeusJuce`, not an external submodule.
 

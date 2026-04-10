@@ -6,7 +6,7 @@ if(WIN32)
     set(IPP_LIBS ippsmt ippcoremt ippimt ippcvmt ippvmmt)
 elseif(APPLE)
     # IPP is x86_64 only. For universal builds, we use -Xarch_x86_64 to conditionally
-    # compile with PAMPLEJUCE_IPP and link IPP libraries only for the x86_64 slice.
+    # compile with ZEUSJUCE_IPP and link IPP libraries only for the x86_64 slice.
     if(CMAKE_OSX_ARCHITECTURES MATCHES "x86_64" OR
        (NOT CMAKE_OSX_ARCHITECTURES AND CMAKE_SYSTEM_PROCESSOR STREQUAL "x86_64"))
         include(FetchContent)
@@ -42,7 +42,7 @@ if (DEFINED IPP_ROOT)
 
         if (IPP_MACOS)
             # For universal builds, use -Xarch_x86_64 to apply IPP flags only to x86_64 slice
-            target_compile_options(SharedCode INTERFACE "SHELL:-Xarch_x86_64 -DPAMPLEJUCE_IPP=1")
+            target_compile_options(SharedCode INTERFACE "SHELL:-Xarch_x86_64 -DZEUSJUCE_IPP=1")
 
             # Link IPP libraries only for x86_64 slice of universal binary
             # Use -Wl to pass library flags directly to linker, bypassing driver issues
@@ -53,7 +53,7 @@ if (DEFINED IPP_ROOT)
         else()
             target_link_directories(SharedCode INTERFACE "${IPP_LIB}")
             target_link_libraries(SharedCode INTERFACE ${IPP_LIBS})
-            target_compile_definitions(SharedCode INTERFACE PAMPLEJUCE_IPP=1)
+            target_compile_definitions(SharedCode INTERFACE ZEUSJUCE_IPP=1)
         endif()
     else ()
         message(STATUS "INTEL IPP NOT LOADED: ${IPP_ROOT} was not found")
